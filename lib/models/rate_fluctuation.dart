@@ -16,9 +16,8 @@ class Rate {
   factory Rate.fromRawJson(String str) => Rate.fromJson(json.decode(str));
 
   factory Rate.fromJson(Map<String, dynamic> json) => Rate(
-        change: json["change"],
-        changePct: json["change_pct"],
-        endRate: json["end_rate"],
-        startRate: json["start_rate"],
-      );
+      change: json["change"],
+      changePct: json["change_pct"],
+      endRate: json["end_rate"],
+      startRate: json["start_rate"]);
 }

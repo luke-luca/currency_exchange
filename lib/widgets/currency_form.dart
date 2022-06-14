@@ -15,6 +15,7 @@ class CurrencyForm extends StatefulWidget {
 class _CurrencyFormState extends State<CurrencyForm> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool shouldDisplay = false;
+
   Stream<CurrencyExchange> _convertData() async* {
     yield await ApiHub().fetchData(
         Currency.values.firstWhere(

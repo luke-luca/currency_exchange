@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:currency_exchange/models/currency.dart';
-import 'package:currency_exchange/models/rate.dart';
+import 'package:currency_exchange/models/rate_fluctuation.dart';
 
 class CurrencyFluctuation {
   CurrencyFluctuation({
@@ -20,17 +18,15 @@ class CurrencyFluctuation {
   DateTime startDate;
   bool success;
 
-  factory CurrencyFluctuation.fromRawJson(String str) =>
-      CurrencyFluctuation.fromJson(json.decode(str));
-
-  factory CurrencyFluctuation.fromJson(Map<Currency, dynamic> json) =>
+  factory CurrencyFluctuation.fromJson(
+          Map<String, dynamic> json, Currency symbol) =>
       CurrencyFluctuation(
         base: Currency.values
             .firstWhere((element) => element.name == json['base']),
-        endDate: json["end_date"],
+        endDate: DateTime.parse(json["end_date"]),
         fluctuation: json["fluctuation"],
-        rates: Rate.fromJson(json["rate"]),
-        success: json["success"],
-        startDate: json["start_date"],
+        rates: Rate.fromJson(json["rates"][symbol.name]),
+        success: json["success"] == "true",
+        startDate: DateTime.parse(json["start_date"]),
       );
 }

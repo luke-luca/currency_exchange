@@ -1,6 +1,6 @@
 import 'package:currency_exchange/api_hub.dart';
 import 'package:currency_exchange/models/currency.dart';
-import 'package:currency_exchange/models/rate.dart';
+import 'package:currency_exchange/models/currency_fluctuation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -15,10 +15,25 @@ class CurrencyChanged extends StatefulWidget {
 
 class _CurrencyChangedState extends State<CurrencyChanged> {
   final _formKey = GlobalKey<FormBuilderState>();
+  DateTime _startDate = DateTime.now();
+  DateTime _endDate = DateTime.now();
+  Currency _currency = Currency.EUR;
+  Future<CurrencyFluctuation> _fetchFlucattion(
+      {required DateTime startDate,
+      required DateTime endDate,
+      required Currency currency}) async {
+    return await ApiHub().fetchFluctuation(
+        currency,
+        endDate, //teraz
+        startDate, //kiedys
+        Currency.PLN);
+  }
 
-  Future<Rate> _fetchFlucattion() async {
-    return await ApiHub()
-        .fetchFluctuation(Currency.PLN, DateTime.now(), DateTime.now());
+  @override
+  void initState() {
+    _fetchFlucattion(
+        startDate: _startDate, endDate: _endDate, currency: _currency);
+    super.initState();
   }
 
   @override
@@ -35,25 +50,23 @@ class _CurrencyChangedState extends State<CurrencyChanged> {
               children: [
                 FormBuilderDateTimePicker(
                   name: 'startDate',
-                  decoration: const InputDecoration(labelText: 'Pick Date'),
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2050),
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Date',
+                  ),
+                  initialValue: DateTime.now(),
+                  inputType: InputType.date,
                   format: DateFormat('yyyy-MM-dd'),
-                  onChanged: (value) {
-                    _formKey.currentState!.save();
-                  },
                 ),
                 FormBuilderDateTimePicker(
                   name: 'endDate',
-                  decoration: const InputDecoration(labelText: 'Pick End Date'),
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2050),
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Date',
+                  ),
+                  initialValue: DateTime.now(),
+                  inputType: InputType.date,
                   format: DateFormat('yyyy-MM-dd'),
-                  onChanged: (value) {
-                    _formKey.currentState!.save();
-                  },
                 ),
                 FormBuilderDropdown(
                   name: 'currency',
@@ -66,17 +79,55 @@ class _CurrencyChangedState extends State<CurrencyChanged> {
                   }).toList(),
                   validator: FormBuilderValidators.required(),
                 ),
-                FutureBuilder<Rate>(
-                  future: _fetchFlucattion(),
+                ElevatedButton(
+                    child: const Text('Submit'),
+                    onPressed: () {
+                      _formKey.currentState!.save();
+                      setState(() {
+                        _startDate = _formKey.currentState!.value['startDate'];
+                        _endDate = _formKey.currentState!.value['endDate'];
+                        _currency = Currency.values.firstWhere((element) =>
+                            element.name ==
+                            _formKey.currentState!.value['currency']);
+                      });
+                    }),
+                FutureBuilder<CurrencyFluctuation>(
+                  future: _fetchFlucattion(
+                      startDate: _startDate,
+                      endDate: _endDate,
+                      currency: _currency),
                   builder: (context, snapshot) {
-                    Rate data = snapshot.data!;
                     if (snapshot.hasData) {
-                      return Text(data.changePct.toString());
+                      CurrencyFluctuation data = snapshot.data!;
+                      return Column(children: [
+                        Text(data.startDate.toString()),
+                        Text(data.endDate.toString()),
+                        Text(
+                          data.rates.startRate.toStringAsFixed(4),
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Text(
+                          data.rates.endRate.toStringAsFixed(4),
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Text(
+                          ((data.rates.endRate - data.rates.startRate) /
+                                  data.rates.startRate)
+                              .toStringAsFixed(4),
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Text(
+                          "${((((data.rates.endRate - data.rates.startRate) / data.rates.startRate) * 100)).toStringAsFixed(2)}%",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ]);
                     } else if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
-                    } else {
-                      return const CircularProgressIndicator();
+                      return Text(
+                        snapshot.error.toString(),
+                        style: Theme.of(context).textTheme.headline6,
+                      );
                     }
+                    return const CircularProgressIndicator();
                   },
                 ),
               ],
