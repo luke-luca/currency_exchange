@@ -17,8 +17,8 @@ class _CurrencyFormState extends State<CurrencyForm> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool shouldDisplay = false;
 
-  Stream<CurrencyExchange> _convertData() async* {
-    yield await ApiHub().fetchData(
+  Future<CurrencyExchange> _convertData() async {
+    return await ApiHub().fetchData(
         Currency.values.firstWhere(
             (element) => element.name == _formKey.currentState!.value['from']),
         Currency.values.firstWhere(
@@ -102,8 +102,8 @@ class _CurrencyFormState extends State<CurrencyForm> {
                     ? Text(_formKey.currentState!.value['to'])
                     : Container(),
                 shouldDisplay
-                    ? StreamBuilder<CurrencyExchange>(
-                        stream: _convertData(),
+                    ? FutureBuilder<CurrencyExchange>(
+                        future: _convertData(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             CurrencyExchange data = snapshot.data!;

@@ -1,4 +1,7 @@
+import 'package:currency_exchange/widgets/currency_changed.dart';
+import 'package:currency_exchange/widgets/currency_chart_week.dart';
 import 'package:currency_exchange/widgets/currency_form.dart';
+import 'package:currency_exchange/widgets/currency_top.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -36,15 +39,17 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: const CurrencyForm()),
-                ],
-              ),
+            Expanded(
+              child: CurrencyTop(),
+            ),
+            Expanded(
+              child: CurrencyForm(),
+            ),
+            Expanded(
+              child: CurrencyChanged(),
+            ),
+            Expanded(
+              child: CurrencyChartWeek(),
             ),
           ],
         ),
