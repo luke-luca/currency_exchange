@@ -1,4 +1,5 @@
 import 'package:currency_exchange/api_hub.dart';
+import 'package:currency_exchange/consts.dart';
 import 'package:currency_exchange/models/currency_exchange.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -28,54 +29,68 @@ class _CurrencyFormState extends State<CurrencyForm> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400,
       width: 500,
+      height: 800,
       child: Column(
         children: [
           FormBuilder(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FormBuilderTextField(
                   name: 'amount',
-                  decoration: const InputDecoration(labelText: 'Amount'),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.numeric(),
-                    FormBuilderValidators.max(70),
-                  ]),
+                  decoration: inputDecoration.copyWith(
+                    labelText: 'amount',
+                  ),
+                  validator: FormBuilderValidators.compose(
+                    [
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.numeric(),
+                      FormBuilderValidators.max(70),
+                    ],
+                  ),
                 ),
+                const SizedBox(height: 10),
                 FormBuilderDropdown(
                   name: 'from',
-                  decoration: const InputDecoration(labelText: 'From'),
+                  decoration: inputDecoration.copyWith(labelText: 'from'),
                   items: Currency.values.map((currency) {
                     return DropdownMenuItem(
                       value: currency.name,
-                      child: Text(currency.name.toString()),
+                      child: Text('${currency.flag} ${currency.name}'),
                     );
                   }).toList(),
                   validator: FormBuilderValidators.required(),
                 ),
+                const SizedBox(height: 10),
                 FormBuilderDropdown(
                   name: 'to',
-                  decoration: const InputDecoration(labelText: 'To'),
+                  decoration: inputDecoration.copyWith(labelText: 'to'),
                   items: Currency.values.map((currency) {
                     return DropdownMenuItem(
                       value: currency.name,
-                      child: Text(currency.name.toString()),
+                      child: Text('${currency.flag} ${currency.name}'),
                     );
                   }).toList(),
                   validator: FormBuilderValidators.required(),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    _formKey.currentState!.save();
-
-                    setState(() {
-                      shouldDisplay = true;
-                    });
-                  },
-                  child: const Text('Submit'),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: (ElevatedButton(
+                    style: elevatedButtonStyle,
+                    onPressed: () {
+                      _formKey.currentState!.save();
+                      setState(() {
+                        shouldDisplay = true;
+                      });
+                    },
+                    child: const Text(
+                      'Submit',
+                      style: boldFont,
+                    ),
+                  )),
                 ),
                 shouldDisplay
                     ? Text(_formKey.currentState!.value['amount'].toString())

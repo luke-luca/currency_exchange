@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:currency_exchange/models/currency.dart';
 import 'package:currency_exchange/models/rate_timeseries.dart';
 
@@ -28,11 +27,10 @@ class CurrencyTimeseries {
         base: Currency.values
             .firstWhere((element) => element.name == jsonix['base']),
         endDate: DateTime.parse(jsonix["end_date"]),
-        rates: Map.fromIterable(jsonix["rates"].keys,
-            key: (k) => DateTime.parse(k),
-            value: (v) {
-              return Rate.fromJson(jsonix["rates"][v]);
-            }),
+        rates: {
+          for (var e in jsonix["rates"].keys)
+            DateTime.parse(e): Rate.fromJson(jsonix["rates"][e])
+        },
         success: jsonix["success"] == "true",
         startDate: DateTime.parse(jsonix["start_date"]),
         timeseries: jsonix["timeseries"],

@@ -33,69 +33,77 @@ class _CurrencyTopState extends State<CurrencyTop> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('Broke Currency Exchange'),
-        FormBuilder(
-          key: _formKey,
-          child: FormBuilderDateTimePicker(
-            name: 'date',
-            enabled: true,
-            decoration: const InputDecoration(
-              labelText: 'Date',
+    return Drawer(
+      width: 300,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ListView(children: [
+          DrawerHeader(
+            child: Image.asset(
+              'img/logo.jpg',
             ),
-            initialValue: DateTime.now(),
-            inputType: InputType.date,
-            format: DateFormat('yyyy-MM-dd'),
-            onChanged: (value) {
-              _formKey.currentState!.save();
-              setState(() {
-                _date = _formKey.currentState!.value['date'];
-              });
+          ),
+          FormBuilder(
+            key: _formKey,
+            child: FormBuilderDateTimePicker(
+              name: 'date',
+              enabled: true,
+              decoration: const InputDecoration(
+                labelText: 'Date',
+              ),
+              initialValue: DateTime.now(),
+              inputType: InputType.date,
+              format: DateFormat('yyyy-MM-dd'),
+              onChanged: (value) {
+                _formKey.currentState!.save();
+                setState(() {
+                  _date = _formKey.currentState!.value['date'];
+                });
+              },
+            ),
+          ),
+          StreamBuilder<List<CurrencyExchange>>(
+            stream: _fetchData(date: _date),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<CurrencyExchange> data = snapshot.data!;
+                return DataTable(
+                  columns: const [
+                    DataColumn(
+                      label: Text('From'),
+                    ),
+                    DataColumn(
+                      label: Text('To'),
+                    ),
+                    DataColumn(
+                      label: Text('Result'),
+                    ),
+                  ],
+                  rows: data
+                      .map((currencyExchange) => DataRow(
+                            cells: [
+                              DataCell(
+                                Text(currencyExchange.query.from.flag),
+                              ),
+                              DataCell(
+                                Text(currencyExchange.query.to.flag),
+                              ),
+                              DataCell(
+                                Text(currencyExchange.result.toString()),
+                              ),
+                            ],
+                          ))
+                      .toList(),
+                );
+              } else if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              } else {
+                return const CircularProgressIndicator();
+              }
             },
           ),
-        ),
-        StreamBuilder<List<CurrencyExchange>>(
-          stream: _fetchData(date: _date),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<CurrencyExchange> data = snapshot.data!;
-              return DataTable(
-                columns: const [
-                  DataColumn(
-                    label: Text('From'),
-                  ),
-                  DataColumn(
-                    label: Text('To'),
-                  ),
-                  DataColumn(
-                    label: Text('Result'),
-                  ),
-                ],
-                rows: data
-                    .map((currencyExchange) => DataRow(
-                          cells: [
-                            DataCell(
-                              Text(currencyExchange.query.from.flag),
-                            ),
-                            DataCell(
-                              Text(currencyExchange.query.to.flag),
-                            ),
-                            DataCell(
-                              Text(currencyExchange.result.toString()),
-                            ),
-                          ],
-                        ))
-                    .toList(),
-              );
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
-        ),
-      ],
+        ]),
+      ),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Rate {
   Rate({
     required this.pln,
