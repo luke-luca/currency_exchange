@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+//Info of CurrencyExchange to retrive data to convert currency
 class Info {
   Info({
     required this.rate,

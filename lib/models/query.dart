@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:currency_exchange/models/currency.dart';
 
+//Query class to store data to convert currency
 class Query {
   Query({
     required this.amount,

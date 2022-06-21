@@ -14,10 +14,11 @@ class CurrencyForm extends StatefulWidget {
   State<CurrencyForm> createState() => _CurrencyFormState();
 }
 
+//Widget to convert data and display result in container
 class _CurrencyFormState extends State<CurrencyForm> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool shouldDisplay = false;
-
+//Fetch data from API
   Future<CurrencyExchange> _convertData() async {
     return await ApiHub().fetchData(
         Currency.values.firstWhere(
@@ -51,11 +52,13 @@ class _CurrencyFormState extends State<CurrencyForm> {
                   decoration: inputDecoration.copyWith(
                     labelText: 'amount',
                   ),
+                  //Validate input to allow only digits and comma
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(',',
                         replacementString: '.'),
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
+
                   validator: FormBuilderValidators.compose(
                     [
                       FormBuilderValidators.required(),
@@ -114,6 +117,7 @@ class _CurrencyFormState extends State<CurrencyForm> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             CurrencyExchange data = snapshot.data!;
+                            //Display result in container
                             return Container(
                                 width: 500,
                                 height: 150,
