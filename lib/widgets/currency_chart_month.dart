@@ -9,21 +9,20 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../models/rate_timeseries.dart';
 
-class CurrencyChartWeek extends StatefulWidget {
-  const CurrencyChartWeek({Key? key}) : super(key: key);
+class CurrencyChartMonth extends StatefulWidget {
+  const CurrencyChartMonth({Key? key}) : super(key: key);
 
   @override
-  State<CurrencyChartWeek> createState() => _CurrencyChartWeekState();
+  State<CurrencyChartMonth> createState() => _CurrencyChartMonthState();
 }
 
-class _CurrencyChartWeekState extends State<CurrencyChartWeek> {
+class _CurrencyChartMonthState extends State<CurrencyChartMonth> {
   late List<ChartData> chartData;
   late Future<CurrencyTimeseries> currencyTimeseries;
 
   late DateTime _startDate;
   late DateTime _endDate;
   int position = 0;
-  //Fetch data from API to build weekly chart
   Future<CurrencyTimeseries> _fetchData(
       {required DateTime startDate, required DateTime endDate}) async {
     return await ApiHub().fetchTimeseries(
@@ -34,17 +33,15 @@ class _CurrencyChartWeekState extends State<CurrencyChartWeek> {
     );
   }
 
-  //Setup initial state of the widget
   @override
   void initState() {
-    _startDate = DateTime.now().subtract(const Duration(days: 6));
+    _startDate = DateTime.now().subtract(const Duration(days: 30));
     _endDate = DateTime.now();
     currencyTimeseries = _fetchData(startDate: _startDate, endDate: _endDate);
     chartData = [];
     super.initState();
   }
 
-  //Build the widget that contain the chart
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,26 +53,26 @@ class _CurrencyChartWeekState extends State<CurrencyChartWeek> {
               style: elevatedButtonStyle,
               onPressed: () {
                 setState(() {
-                  _startDate = _startDate.subtract(const Duration(days: 7));
-                  _endDate = _endDate.subtract(const Duration(days: 7));
+                  _startDate = _startDate.subtract(const Duration(days: 30));
+                  _endDate = _endDate.subtract(const Duration(days: 30));
                   currencyTimeseries = currencyTimeseries =
                       _fetchData(startDate: _startDate, endDate: _endDate);
                   position--;
                 });
               },
               child: const Text(
-                'Previous Week',
+                'Previous Month',
                 style: boldFont,
               ),
             ),
-            const Text('Weekly Chart', style: boldFontBlack),
+            const Text('Monthly Chart', style: boldFontBlack),
             ElevatedButton(
               style: elevatedButtonStyle,
               onPressed: position < 0
                   ? () {
                       setState(() {
-                        _startDate = _startDate.add(const Duration(days: 6));
-                        _endDate = _endDate.add(const Duration(days: 6));
+                        _startDate = _startDate.add(const Duration(days: 30));
+                        _endDate = _endDate.add(const Duration(days: 30));
                         currencyTimeseries = currencyTimeseries = _fetchData(
                             startDate: _startDate, endDate: _endDate);
                         position++;
@@ -83,7 +80,7 @@ class _CurrencyChartWeekState extends State<CurrencyChartWeek> {
                     }
                   : null,
               child: const Text(
-                'Next Week',
+                'Next Month',
                 style: boldFont,
               ),
             ),
@@ -98,7 +95,6 @@ class _CurrencyChartWeekState extends State<CurrencyChartWeek> {
     );
   }
 
-  //Build the chart
   Widget chartBuilder(context, snapshot) {
     if (snapshot.hasData) {
       CurrencyTimeseries data = snapshot.data!;

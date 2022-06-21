@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:currency_exchange/models/info.dart';
 import 'package:currency_exchange/models/query.dart';
 
+//Model of CurrencyExchange to retrive data to convert currency
 class CurrencyExchange {
   CurrencyExchange({
     required this.date,

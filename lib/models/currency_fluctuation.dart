@@ -1,6 +1,7 @@
 import 'package:currency_exchange/models/currency.dart';
 import 'package:currency_exchange/models/rate_fluctuation.dart';
 
+//Model of CurrencyFluctuation to retrive data to calculate currency fluctuation
 class CurrencyFluctuation {
   CurrencyFluctuation({
     required this.base,

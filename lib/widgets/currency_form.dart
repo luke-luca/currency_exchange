@@ -2,6 +2,7 @@ import 'package:currency_exchange/api_hub.dart';
 import 'package:currency_exchange/consts.dart';
 import 'package:currency_exchange/models/currency_exchange.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import '../models/currency.dart';
@@ -32,7 +33,14 @@ class _CurrencyFormState extends State<CurrencyForm> {
       width: 500,
       height: 800,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            'Currency Converter',
+            style: boldBigFont,
+          ),
+          const SizedBox(height: 20),
           FormBuilder(
             key: _formKey,
             child: Column(
@@ -43,6 +51,11 @@ class _CurrencyFormState extends State<CurrencyForm> {
                   decoration: inputDecoration.copyWith(
                     labelText: 'amount',
                   ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(',',
+                        replacementString: '.'),
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                  ],
                   validator: FormBuilderValidators.compose(
                     [
                       FormBuilderValidators.required(),
@@ -92,22 +105,96 @@ class _CurrencyFormState extends State<CurrencyForm> {
                     ),
                   )),
                 ),
-                shouldDisplay
-                    ? Text(_formKey.currentState!.value['amount'].toString())
-                    : Container(),
-                shouldDisplay
-                    ? Text(_formKey.currentState!.value['from'])
-                    : Container(),
-                shouldDisplay
-                    ? Text(_formKey.currentState!.value['to'])
-                    : Container(),
+                const SizedBox(
+                  height: 20,
+                ),
                 shouldDisplay
                     ? FutureBuilder<CurrencyExchange>(
                         future: _convertData(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             CurrencyExchange data = snapshot.data!;
-                            return Text(data.result.toString());
+                            return Container(
+                                width: 500,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight,
+                                      colors: [
+                                        Colors.white,
+                                        Color.fromARGB(140, 255, 255, 255),
+                                        Color.fromARGB(138, 255, 255, 255),
+                                        Colors.white10,
+                                        Colors.white,
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ]),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            data.query.from.name,
+                                            style: boldBigFont,
+                                          ),
+                                          Text(
+                                            data.query.amount
+                                                    .toStringAsFixed(2) +
+                                                data.query.from.symbol,
+                                            style: regularBlackFont,
+                                          ),
+                                          const SizedBox(height: 10),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: const [
+                                        Icon(
+                                          Icons.arrow_forward,
+                                          size: 60,
+                                        ),
+                                      ],
+                                    )),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            data.query.to.name,
+                                            style: boldBigFont,
+                                          ),
+                                          Text(
+                                            data.result.toStringAsFixed(2) +
+                                                data.query.to.symbol,
+                                            style: regularBlackFont,
+                                          ),
+                                          const SizedBox(height: 10),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
                           } else if (snapshot.hasError) {
                             return Text(snapshot.error.toString());
                           } else {

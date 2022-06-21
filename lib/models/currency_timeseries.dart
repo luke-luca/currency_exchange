@@ -1,6 +1,7 @@
 import 'package:currency_exchange/models/currency.dart';
 import 'package:currency_exchange/models/rate_timeseries.dart';
 
+//Model of CurrencyTimeseries to retrive data for charts
 class CurrencyTimeseries {
   CurrencyTimeseries({
     required this.base,

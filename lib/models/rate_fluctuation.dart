@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+//Rate class to store data to calculate currency fluctuation
 class Rate {
   Rate({
     required this.change,

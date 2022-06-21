@@ -3,21 +3,22 @@ import 'package:currency_exchange/models/currency_exchange.dart';
 import 'package:currency_exchange/models/currency_timeseries.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
-
 import 'models/currency_fluctuation.dart';
 
+//Singleton to send request to API
 class ApiHub {
   ApiHub._internal();
 
   factory ApiHub() {
     return _instance;
   }
-
+  //Connection info to API
   static final _instance = ApiHub._internal();
-  static const _apiKey = 'ulrklj2JpvKUnMkS6nIemjihDVL72ThB';
+  static const _apiKey = 'kzrVtT0F0ki4s99wSI7Iz0L0UP81NByz';
   static const _apiUrl = 'https://api.apilayer.com/exchangerates_data';
-
+  //Initialize dio
   final Dio _dio = Dio();
+  //Fetch data for currency exchange to convert currency
   Future<CurrencyExchange> fetchData(Currency from, Currency to, double amount,
       {DateTime? date}) async {
     date ??= DateTime.now();
@@ -37,6 +38,7 @@ class ApiHub {
     return CurrencyExchange.fromJson(response.data);
   }
 
+  //Fetch data for currency fluctuation
   Future<CurrencyFluctuation> fetchFluctuation(
     Currency base,
     DateTime endDate,
@@ -60,6 +62,7 @@ class ApiHub {
     return CurrencyFluctuation.fromJson(response.data, symbol);
   }
 
+  //Fetch data for currency timeseries
   Future<CurrencyTimeseries> fetchTimeseries(
     Currency base,
     DateTime endDate,
