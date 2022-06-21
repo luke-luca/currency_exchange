@@ -64,7 +64,8 @@ flutter:
   # the material Icons class.
 
   assets:
-    - assets/img/
+    - assets/img/background.png
+    - assets/img/logo.png
 
   fonts:
     - family: Neue Plak Regular
