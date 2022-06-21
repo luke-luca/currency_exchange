@@ -119,7 +119,7 @@ class ContentColumn extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Expanded(
                     child: CurrencyChanged(),
                   ),
