@@ -67,7 +67,7 @@ class _CurrencyTopState extends State<CurrencyTop> {
         child: ListView(children: [
           DrawerHeader(
             child: Image.asset(
-              'img/logo.png',
+              'assets/img/logo.png',
             ),
           ),
           FormBuilder(

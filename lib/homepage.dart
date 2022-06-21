@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+//Main page of the app
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
               child: SizedBox(
                 width: 800,
                 child: Image.asset(
-                  '/img/background.png',
+                  'assets/img/background.png',
                   fit: BoxFit.fitWidth,
                 ),
               ),
