@@ -44,8 +44,8 @@ class _CurrencyChangedState extends State<CurrencyChanged> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 500,
-      height: 800,
+      width: 400,
+      height: 900,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

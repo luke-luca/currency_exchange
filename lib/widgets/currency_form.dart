@@ -31,8 +31,8 @@ class _CurrencyFormState extends State<CurrencyForm> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 500,
-      height: 800,
+      width: 400,
+      height: 900,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +120,6 @@ class _CurrencyFormState extends State<CurrencyForm> {
                             //Display result in container
                             return Container(
                                 width: 500,
-                                height: 150,
                                 decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       begin: Alignment.bottomLeft,

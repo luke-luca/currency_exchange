@@ -33,9 +33,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           //Set up media query to make the app responsive
-          MediaQuery.of(context).size.width >= 900
-              ? const ContentRow()
-              : const ContentColumn(),
+          const ContentRow()
         ]),
       ),
     );
@@ -54,38 +52,40 @@ class ContentRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Expanded(
-          flex: 1,
-          child: CurrencyTop(),
-        ),
+        // const Expanded(
+        //   flex: 1,
+        //   child: CurrencyTop(),
+        // ),
         Expanded(
-            flex: 5,
+            flex: 2,
             child: Padding(
               padding: const EdgeInsets.only(
                 top: 25,
                 left: 25,
+                right: 25,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Expanded(
-                    child: CurrencyChanged(),
-                  ),
-                  const Expanded(
-                    child: CurrencyForm(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Expanded(
-                        child: CurrencyChartWeek(),
-                      ),
-                      Expanded(
-                        child: CurrencyChartMonth(),
-                      )
-                    ],
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(
+                          flex: 1,
+                          child: CurrencyChanged(),
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: CurrencyForm(),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
