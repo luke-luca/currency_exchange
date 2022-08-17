@@ -120,6 +120,7 @@ class _CurrencyFormState extends State<CurrencyForm> {
                             //Display result in container
                             return Container(
                                 width: 500,
+                                height: 90,
                                 decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       begin: Alignment.bottomLeft,

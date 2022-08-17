@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
             child: Opacity(
               opacity: 0.5,
               child: SizedBox(
-                width: 800,
+                width: 300,
                 child: Image.asset(
                   'assets/img/background.png',
                   fit: BoxFit.fitWidth,
@@ -52,28 +52,29 @@ class ContentRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // const Expanded(
-        //   flex: 1,
-        //   child: CurrencyTop(),
-        // ),
+        const Expanded(
+          flex: 1,
+          child: CurrencyTop(),
+        ),
         Expanded(
-            flex: 2,
+            flex: 3,
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 25,
-                left: 25,
-                right: 25,
+                top: 15,
+                left: 15,
+                right: 15,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
+                    flex: 1,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                           flex: 1,
                           child: CurrencyChanged(),
                         ),
@@ -87,6 +88,26 @@ class ContentRow extends StatelessWidget {
                       ],
                     ),
                   ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Expanded(
+                          flex: 1,
+                          child: CurrencyChartWeek(),
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: CurrencyChartMonth(),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             )),

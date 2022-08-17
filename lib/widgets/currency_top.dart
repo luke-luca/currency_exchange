@@ -61,7 +61,7 @@ class _CurrencyTopState extends State<CurrencyTop> {
               offset: const Offset(0, 3),
             ),
           ]),
-      width: 300,
+      width: 200,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(children: [

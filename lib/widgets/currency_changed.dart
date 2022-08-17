@@ -125,7 +125,7 @@ class _CurrencyChangedState extends State<CurrencyChanged> {
 
                             return Container(
                                 width: 500,
-                                height: 150,
+                                height: 90,
                                 decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       begin: Alignment.bottomLeft,

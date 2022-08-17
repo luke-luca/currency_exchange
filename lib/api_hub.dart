@@ -14,7 +14,7 @@ class ApiHub {
   }
   //Connection info to API
   static final _instance = ApiHub._internal();
-  static const _apiKey = 'lP81gteDtt1Toem0u6uiZjppPsciQq19';
+  static const _apiKey = 'WijtRsVSHpQWFpSOT7v76VSSllvQHYqs';
   static const _apiUrl = 'https://api.apilayer.com/exchangerates_data';
   //Initialize dio
   final Dio _dio = Dio();
